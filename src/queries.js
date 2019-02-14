@@ -133,6 +133,24 @@ function queryByTitle(...args) {
   return firstResultOrNull(queryAllByTitle, ...args)
 }
 
+function queryAllByName(
+  container,
+  name,
+  {exact = true, collapseWhitespace, trim, normalizer} = {},
+) {
+  const matcher = exact ? matches : fuzzyMatches
+  const matchNormalizer = makeNormalizer({collapseWhitespace, trim, normalizer})
+  return Array.from(container.querySelectorAll('[name]')).filter(
+    node =>
+      matcher(node.getAttribute('name'), node, name, matchNormalizer) ||
+      matcher(getNodeText(node), node, name, matchNormalizer),
+  )
+}
+
+function queryByName(...args) {
+  return firstResultOrNull(queryAllByName, ...args)
+}
+
 function queryAllBySelectText(
   container,
   text,
@@ -413,6 +431,8 @@ export {
   queryAllByRole,
   getAllByRole,
   getByRole,
+  queryByName,
+  queryAllByName,
 }
 
 /* eslint complexity:["error", 14] */

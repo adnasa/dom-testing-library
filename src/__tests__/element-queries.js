@@ -648,4 +648,14 @@ test('get/query textarea element by current value', () => {
   expect(queryByDisplayValue('World').id).toEqual('content-textarea')
 })
 
+test('query <input /> element by name', () => {
+  const {queryByName} = renderIntoDocument(`
+    <form name="login-account">
+      <input name="username" placeholder="Kevin Hart" />
+    </form>
+  `)
+  expect(queryByName(/username/i)).toBeInTheDocument()
+  expect(queryByName(/login-account/i)).toBeInTheDocument()
+})
+
 /* eslint jsx-a11y/label-has-for:0 */
